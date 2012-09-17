@@ -188,19 +188,22 @@ class PatternUnlockScreen extends LinearLayoutWithDefaultTouchRecepient
         mLockPatternView.setFocusable(false);
         mLockPatternView.setOnPatternListener(new UnlockPatternListener());
 
+        mLockPatternView.setVisibleDots(mLockPatternUtils.isVisibleDotsEnabled());
+        mLockPatternView.setShowErrorPath(mLockPatternUtils.isShowErrorPath());
+
         // stealth mode will be the same for the life of this screen
         mLockPatternView.setInStealthMode(!mLockPatternUtils.isVisiblePatternEnabled());
 
         // vibrate mode will be the same for the life of this screen
         mLockPatternView.setTactileFeedbackEnabled(mLockPatternUtils.isTactileFeedbackEnabled());
 
-		mLockPatternView.setLockPatternSize(mLockPatternUtils.getLockPatternSize());
+        mLockPatternView.setLockPatternSize(mLockPatternUtils.getLockPatternSize());
 
         // assume normal footer mode for now
         updateFooter(FooterMode.Normal);
 
         setFocusableInTouchMode(true);
-        
+
         mLockPatternUtils.updateLockPatternSize();
     }
 
@@ -253,6 +256,11 @@ class PatternUnlockScreen extends LinearLayoutWithDefaultTouchRecepient
 
     /** {@inheritDoc} */
     public void onKeyboardChange(boolean isKeyboardOpen) {}
+
+    /** {@inheritDoc} */
+    public boolean suspendRecreate() {
+        return false;
+    }
 
     /** {@inheritDoc} */
     public boolean needsInput() {
@@ -344,7 +352,7 @@ class PatternUnlockScreen extends LinearLayoutWithDefaultTouchRecepient
         }
 
         public void onPatternDetected(List<LockPatternView.Cell> pattern) {
-        	mLockPatternUtils.updateLockPatternSize();
+            mLockPatternUtils.updateLockPatternSize();
             if (mLockPatternUtils.checkPattern(pattern)) {
                 mLockPatternView
                         .setDisplayMode(LockPatternView.DisplayMode.Correct);

@@ -33,8 +33,9 @@ ifeq ($(TARGET_BOOTANIMATION_TEXTURE_CACHE),false)
     LOCAL_CFLAGS += -DNO_TEXTURE_CACHE=1
 endif
 
-jljl 
-
+ifeq ($(TARGET_BOOTANIMATION_USE_RGB565),true)
+    LOCAL_CFLAGS += -DUSE_565
+endif
 
 LOCAL_MODULE:= bootanimation
 

@@ -53,6 +53,7 @@ import android.os.RemoteException;
 import android.os.SystemClock;
 import android.os.SystemProperties;
 import android.os.WorkSource;
+import android.os.SystemProperties;
 import android.provider.Settings;
 import android.provider.Settings.SettingNotFoundException;
 import android.util.EventLog;
@@ -285,7 +286,7 @@ public class PowerManagerService extends IPowerManager.Stub
     private int mButtonBrightnessOverride = -1;
     private int mScreenBrightnessDim;
     private boolean mUseSoftwareAutoBrightness;
-    private boolean mAutoBrightessEnabled;
+    private boolean mAutoBrightessEnabled = true;
     private int[] mAutoBrightnessLevels;
     private int[] mLcdBacklightValues;
     private int[] mButtonBacklightValues;
@@ -1819,6 +1820,13 @@ public class PowerManagerService extends IPowerManager.Stub
                     // If AutoBrightness is enabled, set the brightness immediately after the
                     // next sensor value is received.
                     mWaitingForFirstLightSensor = mAutoBrightessEnabled;
+                    if (!mAutoBrightessEnabled && SystemProperties.getBoolean(
+                        "ro.hardware.respect_als", false)) {
+                        /* Force a light sensor reset since we enabled it
+                            when the screen came on */
+                        mAutoBrightessEnabled = true;
+                        setScreenBrightnessMode(Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL);
+                    }
                 } else {
                     // make sure button and key backlights are off too
                     mButtonLight.turnOff();
@@ -2725,6 +2733,11 @@ public class PowerManagerService extends IPowerManager.Stub
             // This is the range of brightness values that we can use.
             final int minval = values[0];
             final int maxval = values[mAutoBrightnessLevels.length];
+            if (minval > maxval) {
+                // this is a button or keyboard brightness where brightness
+                // is in reversed order to sensor values
+                return values[i];
+            }
             // This is the range we will be scaling.  We put some padding
             // at the low and high end to give the adjustment a little better
             // impact on the actual observed value.
@@ -3175,6 +3188,7 @@ public class PowerManagerService extends IPowerManager.Stub
         boolean enabled = (mode == SCREEN_BRIGHTNESS_MODE_AUTOMATIC);
         if (mUseSoftwareAutoBrightness && mAutoBrightessEnabled != enabled) {
             mAutoBrightessEnabled = enabled;
+            enableLightSensorLocked(mAutoBrightessEnabled);
             if (isScreenOn()) {
                 // force recompute of backlight values
                 if (mLightSensorValue >= 0) {

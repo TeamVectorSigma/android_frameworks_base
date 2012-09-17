@@ -47,6 +47,7 @@ class ScreenRotationAnimation {
     BlackFrame mEnteringBlackFrame;
     int mWidth, mHeight;
 
+    int mSnapshotRotation;
     int mOriginalRotation;
     int mOriginalWidth, mOriginalHeight;
     int mCurRotation;
@@ -188,17 +189,27 @@ class ScreenRotationAnimation {
     public ScreenRotationAnimation(Context context, SurfaceSession session,
             boolean inTransaction, int originalWidth, int originalHeight, int originalRotation) {
         mContext = context;
-
-        // Screenshot does NOT include rotation!
-        if (originalRotation == Surface.ROTATION_90
+        // Allow for abnormal hardware orientation
+        mSnapshotRotation = (4 - android.os.SystemProperties.getInt("ro.sf.hwrotation",0) / 90) % 4;
+        if (mSnapshotRotation == Surface.ROTATION_0 || mSnapshotRotation == Surface.ROTATION_180) {
+            if (originalRotation == Surface.ROTATION_90
                 || originalRotation == Surface.ROTATION_270) {
-            mWidth = originalHeight;
-            mHeight = originalWidth;
+                mWidth = originalHeight;
+                mHeight = originalWidth;
+            } else {
+                mWidth = originalWidth;
+                mHeight = originalHeight;
+            }
         } else {
-            mWidth = originalWidth;
-            mHeight = originalHeight;
+            if (originalRotation == Surface.ROTATION_90
+                || originalRotation == Surface.ROTATION_270) {
+                mWidth = originalWidth;
+                mHeight = originalHeight;
+            } else {
+                mWidth = originalHeight;
+                mHeight = originalWidth;
+            }
         }
-
         mOriginalRotation = originalRotation;
         mOriginalWidth = originalWidth;
         mOriginalHeight = originalHeight;
@@ -303,7 +314,7 @@ class ScreenRotationAnimation {
         // Compute the transformation matrix that must be applied
         // to the snapshot to make it stay in the same original position
         // with the current screen rotation.
-        int delta = deltaRotation(rotation, Surface.ROTATION_0);
+        int delta = deltaRotation(rotation, mSnapshotRotation);
         createRotationMatrix(delta, mWidth, mHeight, mSnapshotInitialMatrix);
 
         if (DEBUG_STATE) Slog.v(TAG, "**** ROTATION: " + delta);

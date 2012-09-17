@@ -112,7 +112,7 @@ public abstract class IccSmsInterfaceManager extends ISms.Stub {
      */
     public void sendText(String destAddr, String scAddr,
             String text, PendingIntent sentIntent, PendingIntent deliveryIntent) {
-        mPhone.getContext().enforceCallingPermission(
+        mPhone.getContext().enforceCallingOrSelfPermission(
                 "android.permission.SEND_SMS",
                 "Sending SMS message");
         if (Log.isLoggable("SMS", Log.VERBOSE)) {
@@ -210,6 +210,19 @@ public abstract class IccSmsInterfaceManager extends ISms.Stub {
         }
 
         return data;
+    }
+
+    /**
+     * stk send sms Samsung way
+     * @param smsc
+     * @param pdu
+     * @param sentIntent
+     * @param deliveryIntent
+     */
+    public void sendRawPduSat(byte[] smsc, byte[] pdu, PendingIntent sentIntent,
+            PendingIntent deliveryIntent) {
+        mPhone.getContext();
+        mDispatcher.sendRawPdu(smsc, pdu, sentIntent, deliveryIntent,"");
     }
 
     protected abstract void log(String msg);
