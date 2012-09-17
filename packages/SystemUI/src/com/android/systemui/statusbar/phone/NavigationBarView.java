@@ -280,7 +280,6 @@ public class NavigationBarView extends LinearLayout {
                         mLongpressActions[j],
                         mPortraitIcons[j]);
                 v.setTag((landscape ? "key_land_" : "key_") + j);
-
                 addButton(navButtonLayout, v, landscape);
                 addLightsOutButton(lightsOut, v, landscape, false);
 
@@ -295,7 +294,6 @@ public class NavigationBarView extends LinearLayout {
                     addButton(navButtonLayout, separator, landscape);
                     addLightsOutButton(lightsOut, separator, landscape, true);
                 }
-
             }
             if (currentSetting != SHOW_DONT) {
                 View rightMenuKey = generateKey(landscape, KEY_MENU_RIGHT);
