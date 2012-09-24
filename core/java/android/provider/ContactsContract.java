@@ -8364,7 +8364,7 @@ public final class ContactsContract {
                 List<Integer> tokenOffsets = new ArrayList<Integer>();
                 split(contentLine, lineTokens, tokenOffsets);
 
-                // As  we find  matches against the query, we'll populate this list with the marked
+                // As we find matches against the query, we'll populate this list with the marked
                 // (or unchanged) tokens.
                 List<String> markedTokens = new ArrayList<String>();
 
