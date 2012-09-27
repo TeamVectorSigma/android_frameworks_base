@@ -48,6 +48,7 @@ import android.util.AndroidException;
 import android.util.Log;
 import android.view.WindowOrientationListener;
 
+import com.android.internal.telephony.SMSDispatcher;
 import com.android.internal.widget.ILockSettings;
 
 import java.net.URISyntaxException;
@@ -1656,6 +1657,12 @@ public final class Settings {
          * change the ringer mode. See AudioManager.
          */
         public static final String MODE_RINGER = "mode_ringer";
+
+        /**
+         * User interface mode. This is used to change the UI mode forcing it to
+         * Change into tablet mode. Default is disabled. 
+         */
+        public static final String MODE_TABLET_UI = "mode_tabletui";
 
         /**
          * Determines which streams are affected by ringer mode changes. The
@@ -3479,17 +3486,37 @@ public final class Settings {
          * @hide
          */
         public static final String SYSTEMUI_SOFTKEY_REBOOT = "reboot";
-        
+
         /**
          * @hide
          */
         public static final String SYSTEMUI_SOFTKEY_SCREENSHOT = "screenshot";
-        
+
         /**
          * @hide
          */
         public static final String SYSTEMUI_SOFTKEY_SCREENOFF = "screenoff";
-        
+
+        /**
+         * @hide
+         */
+		public static final String SYSTEMUI_SOFTKEY_IME_SWITCHER = "ime_switcher";
+
+        /**
+         * hide
+         */
+		public static final String SYSTEMUI_SOFTKEY_RING_VIB = "ring_vib";
+
+        /**
+         * hide
+         */
+		public static final String SYSTEMUI_SOFTKEY_RING_SILENT = "ring_silent";
+
+        /**
+         * hide
+         */
+		public static final String SYSTEMUI_SOFTKEY_RING_VIB_SILENT = "ring_vib_silent";
+
         /**
          * @hide
          */
@@ -3595,6 +3622,14 @@ public final class Settings {
          * @hide
          */
         public static final String STATUSBAR_WIFI_SIGNAL_TEXT_COLOR = "statusbar_wifi_signal_text_color";
+
+        /**
+         * use Alt Statusbar Signal Layout
+         * boolean
+         *
+         * @hide
+         */
+        public static final String STATUSBAR_SIGNAL_CLUSTER_ALT = "statusbar_signal_cluster_alt";
     }
 
     /**
@@ -3924,6 +3959,12 @@ public final class Settings {
          * by network, gps, or other location providers.
          */
         public static final String ALLOW_MOCK_LOCATION = "mock_location";
+
+        /**
+         * Setting to allow the use of {@link SMSDispatcher#MockSmsReceiver} to simulate
+         * the reception of SMS for testing purposes during application development.
+         */
+        public static final String ALLOW_MOCK_SMS = "mock_sms";
 
         /**
          * A 64-bit number (as a hex string) that is randomly
@@ -5709,6 +5750,7 @@ public final class Settings {
         public static final String[] SETTINGS_TO_BACKUP = {
             ADB_ENABLED,
             ALLOW_MOCK_LOCATION,
+            ALLOW_MOCK_SMS,
             PARENTAL_CONTROL_ENABLED,
             PARENTAL_CONTROL_REDIRECT_URL,
             USB_MASS_STORAGE_ENABLED,
