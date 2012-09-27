@@ -44,7 +44,10 @@
        <item><xliff:g id="id">clock</xliff:g></item>
     </string-array>
 
-    <!-- Flag indicating whether the surface flinger has limited alpha compositing functionality in hardware.  If set, the window manager will disable alpha trasformation in animations where not strictly needed.-->
+    <!-- Flag indicating whether the surface flinger has limited
+         alpha compositing functionality in hardware.  If set, the window
+         manager will disable alpha trasformation in animations where not
+         strictly needed. -->
     <bool name="config_sf_limitedAlpha">false</bool>
 
     <!-- Default value used to block data calls if ims is not
@@ -943,7 +946,7 @@
 
     <!-- Timeout in MS for how long you have to long-press the back key to
          kill the foreground app. -->
-    <integer name="config_backKillTimeout">750</integer>
+    <integer name="config_backKillTimeout">2000</integer>
 
     <!-- If true, adds support for no delay A2DP in Samsung devices -->
     <bool name="config_noDelayInATwoDP">true</bool>
