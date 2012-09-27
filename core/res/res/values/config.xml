@@ -44,7 +44,7 @@
        <item><xliff:g id="id">clock</xliff:g></item>
     </string-array>
 
-    <!-- Flag indicating whether the surface flinger has limited alpha compositing functionality in hardware.  If set, the window manager will disable alpha trasformation in animations where not strictly needed. -->
+    <!-- Flag indicating whether the surface flinger has limited alpha compositing functionality in hardware.  If set, the window manager will disable alpha trasformation in animations where not strictly needed.-->
     <bool name="config_sf_limitedAlpha">false</bool>
 
     <!-- Default value used to block data calls if ims is not
