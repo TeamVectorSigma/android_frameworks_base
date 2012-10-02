@@ -2488,6 +2488,13 @@ public final class Settings {
         public static final String STATUS_BAR_AM_PM = "status_bar_am_pm";
 
         /**
+         * Statusbar transparency value
+         * from 0% to 100%
+         * @hide
+         */
+        public static final String STATUS_BAR_TRANSPARENCY = "status_bar_transparency";
+
+        /**
          * Display style of the status bar battery information
          * 0: Display the stock battery information
          * 1: Display cm battery percentage implementation / dont show stock icon
@@ -2535,6 +2542,13 @@ public final class Settings {
          * @hide
          */
         public static final String STATUS_BAR_IME_SWITCHER = "status_bar_ime_switcher";
+
+        /**
+         * Statusbar State
+         * @hide
+         */
+        public static final String STATUSBAR_STATE = "statusbar_state";
+
 
         /**
          * Whether to use a separate delay for "slide to unlock" and security
@@ -2767,6 +2781,12 @@ public final class Settings {
          * @hide
          */
         public static final String POWER_MENU_SCREENSHOT_ENABLED = "power_menu_screenshot_enabled";
+
+        /**
+         * Whether power menu expanded desktop is enabled
+         * @hide
+         */
+        public static final String POWER_MENU_EXPANDED_DESKTOP_ENABLED = "power_menu_expanded_desktop_enabled";
 
         /**
          * Whether power menu airplane mode is enabled
@@ -3446,6 +3466,18 @@ public final class Settings {
          * @hide
          */
         public static final String NAVIGATION_BAR_BUTTON_ALPHA = "navigation_bar_button_alpha";
+
+        /**
+         *
+         * @hide
+         */
+        public static final String SYSTEMUI_NAVBAR_COLOR = "systemui_navbar_color";
+
+        /**
+         *
+         * @hide
+         */
+        public static final int SYSTEMUI_NAVBAR_COLOR_DEF = 0xFF000000;
 
         /**
          * @hide
