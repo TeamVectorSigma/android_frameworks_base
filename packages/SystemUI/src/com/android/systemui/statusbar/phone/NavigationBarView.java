@@ -33,6 +33,7 @@ import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Handler;
@@ -104,6 +105,7 @@ public class NavigationBarView extends LinearLayout {
     final static String ACTION_HOME = "**home**";
     final static String ACTION_BACK = "**back**";
     final static String ACTION_SEARCH = "**search**";
+    final static String ACTION_SCREENSHOT = "**screenshot**";
     final static String ACTION_MENU = "**menu**";
     final static String ACTION_POWER = "**power**";
     final static String ACTION_NOTIFICATIONS = "**notifications**";
@@ -893,6 +895,8 @@ public class NavigationBarView extends LinearLayout {
                 return getResources().getDrawable(R.drawable.ic_sysbar_recent);
             } else if (uri.equals(ACTION_SEARCH)) {
                 return getResources().getDrawable(R.drawable.ic_sysbar_search);
+            } else if (uri.equals(ACTION_SCREENSHOT)) {
+                return getResources().getDrawable(R.drawable.ic_sysbar_screenshot);
             } else if (uri.equals(ACTION_MENU)) {
                 return getResources().getDrawable(R.drawable.ic_sysbar_menu_big);
             } else if (uri.equals(ACTION_IME)) {
@@ -941,10 +945,8 @@ public class NavigationBarView extends LinearLayout {
         int color = Settings.System.getInt(mContext.getContentResolver(),
                 Settings.System.SYSTEMUI_NAVBAR_COLOR,
                 Settings.System.SYSTEMUI_NAVBAR_COLOR_DEF);
-        if (color == -1)
-            color = Settings.System.SYSTEMUI_NAVBAR_COLOR_DEF;
-        // we don't want alpha here
-        color = Color.rgb(Color.red(color), Color.green(color), Color.blue(color));
-        this.setBackgroundColor(color);
+        float alpha = Color.alpha(color);
+        this.setBackground(new ColorDrawable(color));
+        this.setAlpha(alpha);
     }
 }
