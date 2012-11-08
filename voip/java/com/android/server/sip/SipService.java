@@ -437,7 +437,7 @@ public final class SipService extends ISipService.Stub {
                 return true;
             }
         } catch (UnknownHostException e) {
-            Log.e(TAG, "isBehindAT()" + address, e);
+            Log.e(TAG, "isBehindNAT()" + address, e);
         }
         return false;
     }
