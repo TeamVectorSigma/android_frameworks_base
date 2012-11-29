@@ -279,9 +279,7 @@ public class AudioService extends IAudioService.Stub implements OnFinished {
 
     private boolean mLinkNotificationWithVolume;
 
-    // Cap used for safe headset volume restore. The value directly applies
-    // to AudioSystem.STREAM_MUSIC volume and is rescaled for other streams.
-    private static final int HEADSET_VOLUME_RESTORE_CAP = 10;
+    private static final int HEADSET_VOLUME_RESTORE_CAP_MUSIC = 10; // Out of 15
 
     private final AudioSystem.ErrorCallback mAudioSystemCallback = new AudioSystem.ErrorCallback() {
         public void onError(int error) {
