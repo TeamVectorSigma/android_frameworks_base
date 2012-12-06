@@ -1240,7 +1240,7 @@ public final class Settings {
          * ADVANCED_SETTINGS default value.
          * @hide
          */
-        public static final int ADVANCED_SETTINGS_DEFAULT = 0;
+        public static final int ADVANCED_SETTINGS_DEFAULT = 1;
 
         /**
          * Whether Airplane Mode is on.

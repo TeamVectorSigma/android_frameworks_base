@@ -2430,6 +2430,7 @@ public class Intent implements Parcelable, Cloneable {
      */
     public static final String CATEGORY_FRAMEWORK_INSTRUMENTATION_TEST =
             "android.intent.category.FRAMEWORK_INSTRUMENTATION_TEST";
+
     /**
      * An activity to run when device is inserted into a car dock.
      * Used with {@link #ACTION_MAIN} to launch an activity.  For more
