@@ -278,8 +278,8 @@ public class AudioService extends IAudioService.Stub implements OnFinished {
     };
 
     private boolean mLinkNotificationWithVolume;
-
-    private static final int HEADSET_VOLUME_RESTORE_CAP_MUSIC = 10; // Out of 15
+// Out of 15
+    private static final int HEADSET_VOLUME_RESTORE_CAP_MUSIC = 10; 
 
     private final AudioSystem.ErrorCallback mAudioSystemCallback = new AudioSystem.ErrorCallback() {
         public void onError(int error) {
