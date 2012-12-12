@@ -233,7 +233,7 @@
     <com.android.internal.widget.multiwaveview.GlowPadView
         android:id="@+id/unlock_widget"
         android:layout_width="280dip"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_rowSpan="7"
         android:gravity="left|center_vertical"
         android:focusable="true"

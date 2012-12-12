@@ -952,8 +952,7 @@ public class PhoneWindowManager implements WindowManagerPolicy {
                     }
                     if (targetKilled) {
                         performHapticFeedbackLw(null, HapticFeedbackConstants.LONG_PRESS, false);
-                        Toast.makeText(mContext, R.string.app_killed_message, Toast.LENGTH_SHORT)
-                                .show();
+                        Toast.makeText(mContext, R.string.app_killed_message, Toast.LENGTH_SHORT).show();
                         break;
                     }
                 }
