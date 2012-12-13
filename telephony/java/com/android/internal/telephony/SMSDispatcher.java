@@ -1185,7 +1185,8 @@ public abstract class SMSDispatcher extends Handler {
      * A private class that allow simulating the receive of SMS.<br/>
      * <br/>
      * A developer must use {@link Context#sendBroadcast(Intent)}, using the action
-     * {@link Intents#MOCK_SMS_RECEIVED_ACTION}.<br/>
+     * {@link Intents#MOCK_SMS_RECEIVED_ACTION}. The application requires
+     * {@linkplain "android.permission.SEND_MOCK_SMS"} permission.<br/>
      * <br/>
      * This receiver should be used in the next way:<br/>
      * <pre>
@@ -1208,14 +1209,18 @@ public abstract class SMSDispatcher extends Handler {
     private final class MockSmsReceiver extends BroadcastReceiver {
         private static final String TAG = "MockSmsReceiver";
 
+        private static final String SEND_MOCK_SMS_PERMISSION =
+                                        "android.permission.SEND_MOCK_SMS";
+
         /**
          * Method that register the MockSmsReceiver class as a BroadcastReceiver
          */
         public final void registerReceiver() {
             try {
+                Handler handler = new Handler();
                 IntentFilter filter = new IntentFilter();
                 filter.addAction(Intents.MOCK_SMS_RECEIVED_ACTION);
-                mContext.registerReceiver(this, filter);
+                mContext.registerReceiver(this, filter, SEND_MOCK_SMS_PERMISSION, handler);
                 Log.d(TAG, "Registered MockSmsReceiver");
             } catch (Exception ex) {
                 Log.e(TAG, "Failed to register MockSmsReceiver", ex);
@@ -1299,8 +1304,14 @@ public abstract class SMSDispatcher extends Handler {
                 mockSmsIntent.putExtra("format", android.telephony.SmsMessage.FORMAT_3GPP );
                 dispatch(mockSmsIntent, SMSDispatcher.RECEIVE_SMS_PERMISSION);
 
+                // Set result (messages were sent)
+                setResultCode(android.app.Activity.RESULT_OK);
+
             } catch (Exception ex) {
                 Log.e(TAG, "Failed to dispatch SMS", ex);
+
+                // Set result (messages were not sent)
+                setResultCode(android.app.Activity.RESULT_CANCELED);
             }
         }
 
