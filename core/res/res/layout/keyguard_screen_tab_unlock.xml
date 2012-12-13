@@ -290,7 +290,8 @@
         <com.android.internal.widget.multiwaveview.GlowPadView
             android:id="@+id/unlock_widget"
             android:orientation="horizontal"
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
+            android:gravity="left|top"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
