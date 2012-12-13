@@ -135,7 +135,7 @@
                 android:id="@+id/weather_city"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="14sp"
+                android:textSize="16sp"
                 android:textStyle="bold"
                 android:layout_alignParentRight="true"
                 android:gravity="right"
@@ -152,7 +152,7 @@
                 android:gravity="right"
                 android:singleLine="true"
                 android:ellipsize="marquee"
-                android:textSize="12sp"
+                android:textSize="14sp"
                 android:textColor="?android:attr/textColorPrimary" />
 
             <TextView
@@ -291,7 +291,7 @@
             android:id="@+id/unlock_widget"
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="1dip"
             android:layout_centerHorizontal="true"
