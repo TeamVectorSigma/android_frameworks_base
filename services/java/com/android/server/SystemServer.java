@@ -496,6 +496,7 @@ class ServerThread extends Thread {
             } catch (Throwable e) {
                 Slog.e(TAG, "Failure starting Profile Manager", e);
             }
+
             try {
                 if (accountManager != null)
                     accountManager.systemReady();
