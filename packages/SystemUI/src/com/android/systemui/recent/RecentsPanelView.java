@@ -788,7 +788,8 @@ public class RecentsPanelView extends FrameLayout implements OnItemClickListener
         ActivityOptions opts = ActivityOptions.makeDelayedThumbnailScaleUpAnimation(
                 holder.thumbnailViewImage, bm, 0, 0,
                 new ActivityOptions.OnAnimationStartedListener() {
-                    @Override public void onAnimationStarted() {
+                    @Override
+                    public void onAnimationStarted() {
                         mThumbnailScaleUpStarted = true;
                         if (!mHighEndGfx) {
                             mPlaceholderThumbnail.setVisibility(INVISIBLE);

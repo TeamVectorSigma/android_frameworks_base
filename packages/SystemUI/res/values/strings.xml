@@ -382,7 +382,7 @@
     <string name="gps_notification_found_text">Location set by GPS</string>
 
     <!-- Content description of the clear button in the notification panel for accessibility (not shown on the screen). [CHAR LIMIT=NONE] -->
-    <string name="accessibility_clear_all">Clear all notifications.</string>
+    <string name="accessibility_clear_all">Clear all Notifications.</string>
 
 
     <!-- Description of the desk dock action that invokes the Android Dreams screen saver feature -->
@@ -433,7 +433,7 @@
     <string name="status_bar_settings_toggles">Toggles</string>
 
     <!-- Label in drop down to identify brightness slider -->
-    <string name="brightness_label">Brightness</string>
+    <string name="brightness_label">Brightness </string>
 
     <string name="recents_kill_all_button_text">Clear ALL</string>
 
