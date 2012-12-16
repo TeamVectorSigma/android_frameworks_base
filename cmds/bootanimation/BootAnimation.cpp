@@ -445,7 +445,7 @@ bool BootAnimation::movie()
 
     if(enableSound){
       sp<MediaPlayer> mediaplay = new MediaPlayer();
-      mediaplay->setDataSource ("/system/media/boot_audio.mp3", NULL);
+      mediaplay->setDataSource ("/system/media/blaster.mp3", NULL);
       mediaplay->setVolume (bootVolume, bootVolume);
       mediaplay->prepare();
       mediaplay->start();
