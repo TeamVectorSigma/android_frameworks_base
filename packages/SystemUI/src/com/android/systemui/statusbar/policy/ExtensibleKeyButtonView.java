@@ -35,6 +35,7 @@ import android.view.ViewConfiguration;
 import android.widget.Toast;
 
 import com.android.internal.statusbar.IStatusBarService;
+import com.android.systemui.statusbar.WidgetView;
 import com.android.systemui.statusbar.policy.KeyButtonView;
 import com.android.systemui.R;
 
@@ -223,14 +224,13 @@ public class ExtensibleKeyButtonView extends KeyButtonView {
         		mHandler.postDelayed(mKillTask,ViewConfiguration.getGlobalActionKeyTimeout());
         		return;
 
-        	} else if (mClickAction.equals(ACTION_WIDGETS)) {
-        		// Widgets not yet imported to JB  - Zaphod 07/21/12
-        		return;
-        		/*Intent toggleWidgets = new Intent(
-                        NavigationBarView.WidgetReceiver.ACTION_TOGGLE_WIDGETS);
-                mContext.sendBroadcast(toggleWidgets); */
-        	} else {  // we must have a custom uri
-        		 try {
+                } else if (mClickAction.equals(ACTION_WIDGETS)) {
+                        Intent toggleWidgets = new Intent(
+                        WidgetView.WidgetReceiver.ACTION_TOGGLE_WIDGETS);
+                mContext.sendBroadcast(toggleWidgets);
+                return;
+                } else {  // we must have a custom uri
+                         try {
                      Intent intent = Intent.parseUri(mClickAction, 0);
                      intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                      getContext().startActivity(intent);
@@ -280,15 +280,12 @@ public class ExtensibleKeyButtonView extends KeyButtonView {
         		mHandler.post(mKillTask);
         		return true;
             } else if (mLongpress.equals(ACTION_WIDGETS)) {
-            	// Widgets not yet imported to JB  - Zaphod 07/21/12
-            	return true;
-            	/*
                 Intent toggleWidgets = new Intent(
-                        NavigationBarView.WidgetReceiver.ACTION_TOGGLE_WIDGETS);
+                        WidgetView.WidgetReceiver.ACTION_TOGGLE_WIDGETS);
                 mContext.sendBroadcast(toggleWidgets);
-                return true; */
-        	} else if (mLongpress.equals(ACTION_RECENTS)) {
-        		try {
+                return true;
+                } else if (mLongpress.equals(ACTION_RECENTS)) {
+                        try {
                     mBarService.toggleRecentApps();
                 } catch (RemoteException e) {   
                 	// let it go.

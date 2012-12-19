@@ -90,6 +90,7 @@ public abstract class BaseStatusBar extends SystemUI implements
     protected static final int MSG_HIDE_INTRUDER = 1027;
     private int mNavRingAmount;
     private boolean mTabletui;
+    private WidgetView mWidgetView;
 
     protected static final boolean ENABLE_INTRUDERS = false;
 
@@ -249,6 +250,8 @@ public abstract class BaseStatusBar extends SystemUI implements
 
         createAndAddWindows();
 
+        // create WidgetView
+        WidgetView mWidgetView = new WidgetView(mContext,null);
         disable(switches[0]);
         setSystemUiVisibility(switches[1], 0xffffffff);
         topAppWindowChanged(switches[2] != 0);

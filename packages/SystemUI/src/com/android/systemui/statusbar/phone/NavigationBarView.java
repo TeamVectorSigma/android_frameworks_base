@@ -21,6 +21,7 @@ import java.net.URISyntaxException;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.content.BroadcastReceiver;
 import android.animation.ObjectAnimator;
 import android.app.StatusBarManager;
 import android.content.ContentResolver;
@@ -30,26 +31,32 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.Resources;
 import android.database.ContentObserver;
 import android.graphics.Color;
-import android.graphics.Rect;
-import android.graphics.RectF;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.PixelFormat;
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
 import android.os.ServiceManager;
 import android.provider.Settings;
+import android.support.v4.view.ViewPager;
+import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.util.Slog;
 import android.util.TypedValue;
 import android.view.animation.AccelerateInterpolator;
 import android.view.Display;
+import android.view.Gravity;
+import android.view.HapticFeedbackConstants;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.view.Surface;
 import android.view.Window;
@@ -58,6 +65,7 @@ import android.view.WindowManagerImpl;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import java.io.FileDescriptor;
 import java.io.PrintWriter;
@@ -65,6 +73,8 @@ import java.lang.StringBuilder;
 
 import com.android.internal.statusbar.IStatusBarService;
 import com.android.systemui.R;
+import com.android.systemui.WidgetSelectActivity;
+import com.android.systemui.statusbar.WidgetPagerAdapter;
 import com.android.systemui.statusbar.BaseStatusBar;
 import com.android.systemui.statusbar.DelegateViewHelper;
 import com.android.systemui.statusbar.policy.KeyButtonView;
@@ -112,6 +122,7 @@ public class NavigationBarView extends LinearLayout {
     final static String ACTION_RECENTS = "**recents**";
     final static String ACTION_IME = "**ime**";
     final static String ACTION_KILL = "**kill**";
+    final static String ACTION_WIDGET = "**widgets**";
     final static String ACTION_NULL = "**null**";
 
     int mNumberOfButtons = 3;
@@ -154,7 +165,19 @@ public class NavigationBarView extends LinearLayout {
     private int currentVisibility;
     private int currentSetting;
 
-
+    // Widgets
+    public FrameLayout mPopupView;
+    public WindowManager mWindowManager;
+    int originalHeight = 0;
+    TextView mWidgetLabel;
+    ViewPager mWidgetPager;
+    WidgetPagerAdapter mAdapter;
+    int widgetIds[];
+    float mFirstMoveY;
+    int mCurrentWidgetPage = 0;
+    long mDowntime;
+    boolean mMoving = false;
+    boolean showing = false;
     
     private class H extends Handler {
         public void handleMessage(Message m) {
@@ -907,6 +930,8 @@ public class NavigationBarView extends LinearLayout {
                 return getResources().getDrawable(R.drawable.ic_sysbar_power);
             } else if (uri.equals(ACTION_NOTIFICATIONS)) {
                 return getResources().getDrawable(R.drawable.ic_sysbar_notifications);
+            } else if (uri.equals(ACTION_WIDGET)) {
+                return getResources().getDrawable(R.drawable.ic_sysbar_widget);
             }
         }
 
