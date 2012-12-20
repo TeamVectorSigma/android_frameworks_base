@@ -433,7 +433,7 @@ bool BootAnimation::movie()
     char bootvolume[PROPERTY_VALUE_MAX];
     property_get("persist.sys.boot_enabled", bootenabled, "1");
     property_get("persist.sys.boot_sound", bootsound, "1");
-    property_get("persist.sys.boot_volume", bootvolume, "0.2");
+    property_get("persist.sys.boot_volume", bootvolume, "0.5");
 
     bool bootEnabled = atoi(bootenabled) != 0;
     bool enableSound = atoi(bootsound) != 0;
