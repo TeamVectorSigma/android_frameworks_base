@@ -23,6 +23,7 @@
 #include "DisplayListLogBuffer.h"
 #include "DisplayListRenderer.h"
 #include "Caches.h"
+#include "Properties.h"
 
 namespace android {
 namespace uirenderer {
@@ -1295,6 +1296,12 @@ status_t DisplayList::replay(OpenGLRenderer& renderer, Rect& dirty, int32_t flag
 
 DisplayListRenderer::DisplayListRenderer() : mWriter(MIN_WRITER_SIZE),
         mTranslateX(0.0f), mTranslateY(0.0f), mHasTranslate(false), mHasDrawOps(false) {
+
+    mSubpixelText = DEFAULT_TEXT_SUBPIXEL_POSITIONING;
+    char property[PROPERTY_VALUE_MAX];
+    if (property_get(PROPERTY_TEXT_SUBPIXEL_POSITIONING, property, NULL) > 0) {
+        mSubpixelText = strcmp(property, "true") == 0;
+    }
 }
 
 DisplayListRenderer::~DisplayListRenderer() {
@@ -1680,6 +1687,8 @@ status_t DisplayListRenderer::drawText(const char* text, int bytesCount, int cou
     //       its own copy as it does right now.
     // Beware: this needs Glyph encoding (already done on the Paint constructor)
     paint->setAntiAlias(true);
+    if (mSubpixelText)
+        paint->setSubpixelText(true);
     if (length < 0.0f) length = paint->measureText(text, bytesCount);
 
     bool reject = false;
@@ -1709,6 +1718,8 @@ status_t DisplayListRenderer::drawTextOnPath(const char* text, int bytesCount, i
     addFloat(hOffset);
     addFloat(vOffset);
     paint->setAntiAlias(true);
+    if (mSubpixelText)
+        paint->setSubpixelText(true);
     addPaint(paint);
     return DrawGlInfo::kStatusDone;
 }
@@ -1721,6 +1732,8 @@ status_t DisplayListRenderer::drawPosText(const char* text, int bytesCount, int 
     addInt(count);
     addFloats(positions, count * 2);
     paint->setAntiAlias(true);
+    if (mSubpixelText)
+        paint->setSubpixelText(true);
     addPaint(paint);
     return DrawGlInfo::kStatusDone;
 }
