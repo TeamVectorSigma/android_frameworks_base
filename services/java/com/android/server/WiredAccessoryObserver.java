@@ -303,7 +303,7 @@ class WiredAccessoryObserver extends UEventObserver {
         boolean h2wStateChange = true;
         boolean usbStateChange = true;
         // reject all suspect transitions: only accept state changes from:
-        // - a: 0 heaset to 1 headset
+        // - a: 0 headset to 1 headset
         // - b: 1 headset to 0 headset
         if (LOG) Slog.v(TAG, "newState = "+newState+", headsetState = "+headsetState+","
             + "mHeadsetState = "+mHeadsetState);
