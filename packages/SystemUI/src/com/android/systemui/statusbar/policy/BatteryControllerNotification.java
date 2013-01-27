@@ -41,7 +41,7 @@ import android.widget.TextView;
 
 import com.android.systemui.R;
 
-public class BatteryController extends LinearLayout {
+public class BatteryControllerNotification extends LinearLayout {
     private static final String TAG = "StatusBar.BatteryController";
 
     private Context mContext;
@@ -57,9 +57,12 @@ public class BatteryController extends LinearLayout {
     private TextView mBatteryTextOnly_Plugged;
 
     private static int mBatteryStyle;
+    private boolean mBatteryEnabled;
 
     private int mLevel = -1;
     private boolean mPlugged = false;
+    
+    private boolean isAttached = false;
 
     public static final int STYLE_ICON_ONLY = 0;
     public static final int STYLE_TEXT_ONLY = 1;
@@ -68,7 +71,7 @@ public class BatteryController extends LinearLayout {
     public static final int STYLE_ICON_CIRCLE = 4;
     public static final int STYLE_HIDE = 5;
 
-    public BatteryController(Context context, AttributeSet attrs) {
+    public BatteryControllerNotification(Context context, AttributeSet attrs) {
         super(context, attrs);
         mContext = context;
 
@@ -87,6 +90,8 @@ public class BatteryController extends LinearLayout {
         mBatteryTextOnly_Plugged = (TextView) findViewById(R.id.battery_text_only_plugged);
         addIconView(mBatteryIcon);
 
+        isAttached = true;
+        
         SettingsObserver settingsObserver = new SettingsObserver(new Handler());
         settingsObserver.observe();
         updateSettings(); // to initialize values
@@ -191,7 +196,7 @@ public class BatteryController extends LinearLayout {
                 mBatteryTextOnly_Plugged.setVisibility(View.GONE);
                 mBatteryTextOnly_Low.setVisibility(View.GONE);
             }
-        }       
+        }
     }
 
     class SettingsObserver extends ContentObserver {
@@ -204,6 +209,8 @@ public class BatteryController extends LinearLayout {
             resolver.registerContentObserver(Settings.System
                     .getUriFor(Settings.System.STATUSBAR_BATTERY_ICON), false,
                     this);
+            resolver.registerContentObserver(
+                    Settings.System.getUriFor(Settings.System.NOTIFICATION_BATTERY_DISPLAY), false, this);
         }
 
         @Override
@@ -211,57 +218,94 @@ public class BatteryController extends LinearLayout {
             updateSettings();
         }
     }
+    
+    public void isVisible(boolean show) {
+    	ContentResolver cr = mContext.getContentResolver();
+    	mBatteryEnabled = Settings.System.getBoolean(cr,
+                Settings.System.NOTIFICATION_BATTERY_DISPLAY, false);
+    	
+    	if (mBatteryEnabled && isAttached) {
+    		if (show) {
+    			updateSettings();
+    		} else {
+    			mBatteryText.setVisibility(View.GONE);
+                mBatteryCenterText.setVisibility(View.GONE);
+                mBatteryIcon.setVisibility(View.GONE);
+                mBatteryTextOnly.setVisibility(View.GONE);
+                mBatteryTextOnly_Low.setVisibility(View.GONE);
+                mBatteryTextOnly_Plugged.setVisibility(View.GONE);
+                setVisibility(View.GONE);
+    		}
+    		
+    	}
+    	
+    }
 
     private void updateSettings() {
         // Slog.i(TAG, "updated settings values");
         ContentResolver cr = mContext.getContentResolver();
+        
+        mBatteryEnabled = Settings.System.getBoolean(cr,
+                Settings.System.NOTIFICATION_BATTERY_DISPLAY, false);
+        
         mBatteryStyle = Settings.System.getInt(cr,
                 Settings.System.STATUSBAR_BATTERY_ICON, 0);
 
-        switch (mBatteryStyle) {
-            case STYLE_ICON_ONLY:
-                mBatteryCenterText.setVisibility(View.GONE);
-                mBatteryText.setVisibility(View.GONE);
-                mBatteryIcon.setVisibility(View.VISIBLE);
-                setVisibility(View.VISIBLE);
-                break;
-            case STYLE_TEXT_ONLY:
-                mBatteryText.setVisibility(View.GONE);
-                mBatteryCenterText.setVisibility(View.GONE);
-                mBatteryIcon.setVisibility(View.GONE);
-                setVisibility(View.VISIBLE);
-                break;
-            case STYLE_ICON_TEXT:
-                mBatteryText.setVisibility(View.VISIBLE);
-                mBatteryCenterText.setVisibility(View.GONE);
-                mBatteryIcon.setVisibility(View.VISIBLE);
-                setVisibility(View.VISIBLE);
-                break;
-            case STYLE_ICON_CENTERED_TEXT:
-                mBatteryText.setVisibility(View.GONE);
-                mBatteryCenterText.setVisibility(View.VISIBLE);
-                mBatteryIcon.setVisibility(View.VISIBLE);
-                setVisibility(View.VISIBLE);
-                break;
-            case STYLE_HIDE:
-                mBatteryText.setVisibility(View.GONE);
-                mBatteryCenterText.setVisibility(View.GONE);
-                mBatteryIcon.setVisibility(View.GONE);
-                setVisibility(View.GONE);
-                break;
-            case STYLE_ICON_CIRCLE:
-                mBatteryText.setVisibility(View.GONE);
-                mBatteryCenterText.setVisibility(View.GONE);
-                mBatteryIcon.setVisibility(View.VISIBLE);
-                setVisibility(View.VISIBLE);
-                break;
-            default:
-                mBatteryText.setVisibility(View.GONE);
-                mBatteryCenterText.setVisibility(View.GONE);
-                mBatteryIcon.setVisibility(View.VISIBLE);
-                setVisibility(View.VISIBLE);
-                break;
+        if (mBatteryEnabled) {
+        	switch (mBatteryStyle) {
+                case STYLE_ICON_ONLY:
+                    mBatteryCenterText.setVisibility(View.GONE);
+                    mBatteryText.setVisibility(View.GONE);
+                    mBatteryIcon.setVisibility(View.VISIBLE);
+                    setVisibility(View.VISIBLE);
+                    break;
+                case STYLE_TEXT_ONLY:
+                    mBatteryText.setVisibility(View.GONE);
+                    mBatteryCenterText.setVisibility(View.GONE);
+                    mBatteryIcon.setVisibility(View.GONE);
+                    setVisibility(View.VISIBLE);
+                    break;
+                case STYLE_ICON_TEXT:
+                    mBatteryText.setVisibility(View.VISIBLE);
+                    mBatteryCenterText.setVisibility(View.GONE);
+                    mBatteryIcon.setVisibility(View.VISIBLE);
+                    setVisibility(View.VISIBLE);
+                    break;
+                case STYLE_ICON_CENTERED_TEXT:
+                    mBatteryText.setVisibility(View.GONE);
+                    mBatteryCenterText.setVisibility(View.VISIBLE);
+                    mBatteryIcon.setVisibility(View.VISIBLE);
+                    setVisibility(View.VISIBLE);
+                    break;
+                case STYLE_HIDE:
+                    mBatteryText.setVisibility(View.GONE);
+                    mBatteryCenterText.setVisibility(View.GONE);
+                    mBatteryIcon.setVisibility(View.GONE);
+                    setVisibility(View.GONE);
+                    break;
+                case STYLE_ICON_CIRCLE:
+                    mBatteryText.setVisibility(View.GONE);
+                    mBatteryCenterText.setVisibility(View.GONE);
+                    mBatteryIcon.setVisibility(View.VISIBLE);
+                    setVisibility(View.VISIBLE);
+                    break;
+                default:
+                    mBatteryText.setVisibility(View.GONE);
+                    mBatteryCenterText.setVisibility(View.GONE);
+                    mBatteryIcon.setVisibility(View.VISIBLE);
+                    setVisibility(View.VISIBLE);
+                    break;
+            }
+        } else {
+        	mBatteryText.setVisibility(View.GONE);
+            mBatteryCenterText.setVisibility(View.GONE);
+            mBatteryIcon.setVisibility(View.GONE);
+            mBatteryTextOnly.setVisibility(View.GONE);
+            mBatteryTextOnly_Low.setVisibility(View.GONE);
+            mBatteryTextOnly_Plugged.setVisibility(View.GONE);
+            setVisibility(View.GONE);
         }
+        
 
         setBatteryIcon(mLevel, mPlugged);
 
