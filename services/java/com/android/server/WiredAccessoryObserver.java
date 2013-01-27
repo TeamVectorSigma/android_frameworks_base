@@ -123,12 +123,17 @@ class WiredAccessoryObserver extends UEventObserver {
         List<UEventInfo> retVal = new ArrayList<UEventInfo>();
         UEventInfo uei;
 
-        // Monitor h2w
-        uei = new UEventInfo("h2w", BIT_HEADSET, BIT_HEADSET_NO_MIC);
+        // Monitor headset_sensor for sony msm7x27a otherwise fall back to h2w
+        uei = new UEventInfo("headset_sensor", BIT_HEADSET, BIT_HEADSET_NO_MIC);
         if (uei.checkSwitchExists()) {
             retVal.add(uei);
         } else {
-            Slog.w(TAG, "This kernel does not have wired headset support");
+            uei = new UEventInfo("h2w", BIT_HEADSET, BIT_HEADSET_NO_MIC);
+            if (uei.checkSwitchExists()) {
+                retVal.add(uei);
+            } else {
+                Slog.w(TAG, "This kernel does not have wired headset support");
+            }
         }
 
         // Monitor USB
